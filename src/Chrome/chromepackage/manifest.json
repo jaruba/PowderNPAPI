@@ -1,0 +1,9 @@
+{
+  "name": "Powder NPAPI Plugin",
+  "version": "${FBSTRING_PLUGIN_VERSION}",
+  "description": "An NPAPI Plugin that interfaces Peerflix for the browser",
+
+	"plugins": [
+    { "path": "npPowderNPAPI.dll", "public": true }
+  ]
+}
