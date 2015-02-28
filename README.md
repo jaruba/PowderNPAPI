@@ -1,5 +1,5 @@
 # Powder NPAPI Plugin
-Peerflix interface for the browser. (npapi plugin) - [SEE DEMO](http://jaruba.github.io/PowderNPAPI/)
+Peerflix interface for the browser. (NPAPI Plugin made with FireBreath + Node.js + Peerflix) - [SEE DEMO](http://jaruba.github.io/PowderNPAPI/)
 
 **Embedding in page:**
 
