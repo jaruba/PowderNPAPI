@@ -19,7 +19,7 @@ JS API
 
 **Read Data** - event that returns a stream id and json data from peerflix. The JSON Object can contain: runtime, path, uploaded, downloaded, peerqueue, seeds, link, filename, size.
 
-    .torrentData(streamId,jsonData)
+    torrentData(streamId,jsonData)
 
 **Kill Stream** - terminates a process by stream id.
 
