@@ -1,0 +1,153 @@
+<html>
+<head>
+<title>Powder NPAPI Test Environment</title>
+
+<body>
+<object id="powder" type="application/x-powdernpapi" width="1" height="1"><param name="onload" value="pluginLoaded" /></object>
+
+
+<form onSubmit="validateMagnet(); event.preventDefault();">
+<input type="text" placeholder="Magnet Link" onFocus="this.select();" value="" id="magnetLink" style="width: 200px" /> <button type="submit" style="margin-left: 10px">Stream</button>
+</form>
+Runtime: <span id="runtime">0</span> seconds
+<br>
+<br>
+Console Output:<br>
+<textarea id="console" readonly style="width: 500px; height: 300px">
+</textarea>
+<script type="text/javascript">
+
+	var consoleElem = document.getElementById("console");
+
+	var processLink = [];
+	var processSeeds = [];
+	var processFile = [];
+	var processSize = [];
+	var processPath = [];
+	var processDown = [];
+	var processUp = [];
+	var processPeerQueue = [];
+	var processHash = [];
+	var processDownloaded = [];
+	
+	var fullSize;
+	var downSize;
+	
+	var dataTimer;
+
+	function pluginLoaded() {
+		powder().killAll();
+	}
+			
+	function loadTorrent(hash) {
+		
+		for (i = 1; processHash[i]; i++) {
+			delete processLink[i];
+			delete processSeeds[i];
+			delete processFile[i];
+			delete processSize[i];
+			delete processPath[i];
+			delete processDown[i];
+			delete processUp[i];
+			delete processPeerQueue[i];
+			delete processHash[i];				
+		}
+
+		powder().killAll();
+		
+		if (dataTimer) clearTimeout(dataTimer);
+		
+		var streamId = powder().getStream(hash);
+		
+		processHash[streamId] = hash;
+		
+		if (powder().attachEvent) {
+			// Microsoft
+			powder().attachEvent("ontorrentData", readData);
+		} else if (powder().addEventListener) {
+			// Mozilla: DOM level 2
+			powder().addEventListener("torrentData", readData, false);
+		} else {
+			// DOM level 0
+			powder()["ontorrentData"] = readData;
+		}
+		
+		dataTimer = setTimeout(function() { requestData(streamId) }, 2000);
+
+	}
+
+	function validateMagnet() {
+		document.getElementById('runtime').innerHTML = "0";
+		magnetLink = document.getElementById("magnetLink").value;
+		magnetLink = magnetLink.trim();
+		consoleElem.value = "Waiting for Data ... \n";
+		consoleElem.scrollTop = consoleElem.scrollHeight;
+		found = magnetLink.indexOf("magnet:?xt=urn:btih:");
+		if (found == 0) {
+			magnetLink = magnetLink.substr(found+20);
+			found = magnetLink.indexOf("&");
+			if (found > -1) magnetLink = magnetLink.substr(0,found);
+			loadTorrent(magnetLink);
+		}
+	}
+		
+	function powder() {
+		return document.getElementById('powder');
+	}
+	
+	function requestData(pIndex) {
+		var sData = powder().readStream(pIndex);
+		dataTimer = setTimeout(function() { requestData(pIndex) }, 2000);
+	}
+
+	function readData(pIndex,jsonString) {
+		stopProc = false;
+		if (jsonString.indexOf("{") == -1 || jsonString.indexOf("}") == -1) stopProc = true;
+		if (!stopProc) {
+			if (typeof jsonString === 'undefined') return false;
+			jsonString = jsonString.replace("{H{2J","");
+			gData = JSON.parse(jsonString);
+			if (gData.runtime) {
+				document.getElementById('runtime').innerHTML = gData.runtime;
+			} else {
+				consoleElem.value = consoleElem.value + "\n"+jsonString;
+				consoleElem.scrollTop = consoleElem.scrollHeight;
+			}
+			
+			if (gData.path) processPath[pIndex] = gData.path;
+			if (gData.uploaded) processUp[pIndex] = gData.uploaded;
+			if (gData.peerqueue) processPeerQueue[pIndex] = gData.peerqueue;
+			if (gData.seeds) processSeeds[pIndex] = gData.seeds;
+			if (gData.link) {
+				if (typeof processLink[pIndex] === 'undefined') processLink[pIndex] = gData.link;
+			}
+			if (gData.filename) {
+				file = gData.filename;
+				processFile[pIndex] = file;
+				title = file.substr(0, file.lastIndexOf('.'));
+				if (title) title = title.replace(/\./g, ' ');
+			}
+			if (gData.size) {
+				fullSize = gData.size;
+				processSize[pIndex] = gData.size;
+			}
+			if (gData.downloaded) {
+				downloaded = gData.downloaded;
+				if (downloaded == "0") {
+					downSize = fullSize;
+					if (parseInt(processSeeds[pIndex]) == 0) processDownloaded[pIndex] = 1;
+				} else {
+					downSize = downloaded;
+					if (fullSize) processDownloaded[pIndex] = parseInt(downSize) / parseInt(fullSize);
+				}
+				processDown[pIndex] = downloaded;
+			}
+			
+		}
+
+	}
+			
+</script>
+
+</body>
+</html>
