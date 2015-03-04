@@ -40,8 +40,8 @@ body:before {
 	-moz-border-radius: 6px;
 	border-radius: 6px
 }
-#magnetForm { height: 47px }
-#magnetLink { width:300px }
+#firstMagnetForm { height: 47px }
+#firstMagnet { width:300px }
 #magnetSubmit {
 	position: relative;
 	top: 1px;
@@ -57,7 +57,7 @@ body:before {
         <br>
         <br>
         <div id="formHolder">
-            <form class="pure-form pure-form-aligned" onSubmit="startPhaseTwo(document.getElementById('firstMagnet').value); event.preventDefault();" action="get-stream.php" method="post" id="magnetForm">
+            <form class="pure-form pure-form-aligned" onSubmit="startPhaseTwo(document.getElementById('firstMagnet').value); event.preventDefault();" id="firstMagnetForm">
                 <fieldset>
                     <div class="pure-control-group">
                         <input id="firstMagnet" type="text" name="magnet" placeholder="Magnet Link" onFocus="this.select();" onMouseUp="return false;">
