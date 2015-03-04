@@ -1,0 +1,238 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+<title>Powder NPAPI Demo - Stream Torrents Online</title>
+<style>
+body {
+	background: url(http://1.bp.blogspot.com/-dMl_Yr2cdPU/UkHEhzZ2yNI/AAAAAAAAAK4/4sgs1C7xioI/s1600/8682733816_665e4c64d4_h.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	height: 100%
+}
+body:before {
+  content: '';
+  display: inline-block;
+  height: 42%;
+  vertical-align: middle;
+  margin-right: -0.25em; /* Adjusts for spacing */
+}
+#holdCenter {
+	width: 418px;
+	display: block;
+	padding: 10px;
+	background: rgba(0,0,0,0.4);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px
+}
+#logoBig {
+	margin-left: 4px;
+	margin-bottom: 2px
+}
+#formHolder {
+	display: block;
+	padding: 6px 10px;
+	padding-right: 19px;
+	background: rgba(255,255,255,0.7);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px
+}
+#magnetForm { height: 47px }
+#magnetLink { width:300px }
+#magnetSubmit {
+	position: relative;
+	top: 1px;
+	left: 8px
+}
+</style>
+</head>
+<body>
+
+<center>
+    <div id="holdCenter">
+        <img src="powder-logo.png" id="logoBig">
+        <br>
+        <br>
+        <div id="formHolder">
+            <form class="pure-form pure-form-aligned" onSubmit="startPhaseTwo(document.getElementById('firstMagnet').value); event.preventDefault();" action="get-stream.php" method="post" id="magnetForm">
+                <fieldset>
+                    <div class="pure-control-group">
+                        <input id="firstMagnet" type="text" name="magnet" placeholder="Magnet Link" onFocus="this.select();" onMouseUp="return false;">
+                        <button id="magnetSubmit" type="submit" class="pure-button pure-button-primary">Stream</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    
+    
+    <div id="streamingPhase" style="width: 800px; margin-top:40px; display: none">
+    <div style="display: inline-block; float: left; margin-top: 3px"><a href="http://www.webchimera.org/powder/"><img src="powder-logo-sm.png"></a></div>
+    <div style="display: inline-block; padding: 6px 10px; padding-right: 19px; background: rgba(255,255,255,0.7); -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; margin-bottom: 10px; float: right">
+    <form class="pure-form pure-form-aligned" style="height: 47px" onSubmit="validateMagnet(); event.preventDefault();" id="magnetForm">
+        <fieldset>
+            <div class="pure-control-group">
+                <input id="magnetLink" type="text" placeholder="Magnet Link" value="" style="width:300px" onFocus="this.select();" onMouseUp="return false;">
+                <button type="submit" class="pure-button pure-button-primary" style="position: relative; top: 1px; left: 8px">Stream</button>
+            </div>
+        </fieldset>
+    </form>
+    </div></div>
+    <div style="width: 800px; height: 600px">
+    <div id="player_wrapper" style="height: 100%"></div>
+    </div>
+</center>
+<object id="powder" type="application/x-powdernpapi" width="1" height="1">
+    <param name="onload" value="pluginLoaded" />
+</object>
+
+    <script type="text/javascript">
+	
+	function startPhaseTwo(magnet) {
+		document.getElementById('holdCenter').style.display = "none";
+		document.getElementById('streamingPhase').style.display = "block";
+		document.getElementById('magnetLink').value = magnet;
+		validateMagnet();
+	}
+	
+		var processLink = [];
+		var processSeeds = [];
+		var processFile = [];
+		var processSize = [];
+		var processPath = [];
+		var processDown = [];
+		var processUp = [];
+		var processPeerQueue = [];
+		var processHash = [];
+		var processDownloaded = [];
+		
+		var fullSize;
+		var downSize;
+		
+		var dataTimer;
+	
+		function pluginLoaded() {
+			// kill all peerflix processes when the plugin has loaded
+			powder().killAll();
+		}
+				
+        function loadTorrent(hash) {
+			
+			for (i = 1; processHash[i]; i++) {
+				delete processLink[i];
+				delete processSeeds[i];
+				delete processFile[i];
+				delete processSize[i];
+				delete processPath[i];
+				delete processDown[i];
+				delete processUp[i];
+				delete processPeerQueue[i];
+				delete processHash[i];				
+			}
+
+			powder().killAll();
+			
+			if (dataTimer) clearTimeout(dataTimer);
+			
+            var streamId = powder().getStream(hash);
+			
+			processHash[streamId] = hash;
+			
+			wjs("#player_wrapper").addPlayer({ id: "webchimera", theme: "sleek" });
+			
+			if (powder().attachEvent) {
+				// Microsoft
+				powder().attachEvent("ontorrentData", readData);
+			} else if (powder().addEventListener) {
+				// Mozilla: DOM level 2
+				powder().addEventListener("torrentData", readData, false);
+			} else {
+				// DOM level 0
+				powder()["ontorrentData"] = readData;
+			}
+			
+			dataTimer = setTimeout(function() { requestData(streamId) }, 1000);
+
+        }
+	
+		function validateMagnet() {
+			magnetLink = document.getElementById("magnetLink").value;
+			magnetLink = magnetLink.trim();
+			found = magnetLink.indexOf("magnet:?xt=urn:btih:");
+			if (found == 0) {
+				magnetLink = magnetLink.substr(found+20);
+				found = magnetLink.indexOf("&");
+				if (found > -1) magnetLink = magnetLink.substr(0,found);
+				document.title = "Streaming "+magnetLink;
+				loadTorrent(magnetLink);
+			}
+		}
+			
+        function powder() {
+            return document.getElementById('powder');
+        }
+        
+		function requestData(pIndex) {
+			var sData = powder().readStream(pIndex);
+			dataTimer = setTimeout(function() { requestData(pIndex) }, 1000);
+		}
+
+		function readData(pIndex,jsonString) {
+			console.log(jsonString);
+			stopProc = false;
+			if (jsonString.indexOf("{") == -1 || jsonString.indexOf("}") == -1) stopProc = true;
+			if (!stopProc) {
+				if (typeof jsonString === 'undefined') return false;
+				jsonString = jsonString.replace("{H{2J","");
+				gData = JSON.parse(jsonString);
+				if (gData.path) processPath[pIndex] = gData.path;
+				if (gData.uploaded) processUp[pIndex] = gData.uploaded;
+				if (gData.peerqueue) processPeerQueue[pIndex] = gData.peerqueue;
+				if (gData.seeds) {
+					processSeeds[pIndex] = gData.seeds;
+					wjs("#webchimera").setPeers(gData.seeds);
+				}
+				if (gData.link) {
+					if (typeof processLink[pIndex] === 'undefined') {
+						wjs("#webchimera").addPlaylist(gData.link);
+						wjs("#webchimera").startPlayer();
+						processLink[pIndex] = gData.link;
+					}
+				}
+				if (gData.filename) {
+					file = gData.filename;
+					processFile[pIndex] = file;
+					title = file.substr(0, file.lastIndexOf('.'));
+					if (title) {
+						title = title.replace(/\./g, ' ');
+						document.getElementById("webchimera").playlist.items[document.getElementById("webchimera").playlist.currentItem].title = title;
+						document.title = "Streaming "+title;
+					}
+				}
+				if (gData.size) {
+					fullSize = gData.size;
+					processSize[pIndex] = gData.size;
+				}
+				if (gData.downloaded) {
+					downloaded = gData.downloaded;
+					if (downloaded == "0") {
+						downSize = fullSize;
+						if (parseInt(processSeeds[pIndex]) == 0) processDownloaded[pIndex] = 1;
+					} else {
+						downSize = downloaded;
+						if (fullSize) processDownloaded[pIndex] = parseInt(downSize) / parseInt(fullSize);
+					}
+					wjs("#webchimera").setDownloaded(processDownloaded[pIndex]);
+					processDown[pIndex] = downloaded;
+				}
+				
+			}
+
+		}
+		        
+    </script>
+</body>
+</html>
