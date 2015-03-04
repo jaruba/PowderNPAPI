@@ -25,7 +25,7 @@
     </div>
     
     
-    <div id="streamingPhase" style="width: 800px; margin-top: -280px; display: none">
+    <div id="streamingPhase" style="width: 800px; margin-top: 40px; display: none">
     <div style="display: inline-block; float: left; margin-top: 3px"><a href="http://jaruba.github.io/PowderNPAPI/webchimera-demo/index.htm"><img src="powder-logo-sm.png"></a></div>
     <div style="display: inline-block; padding: 6px 10px; padding-right: 19px; background: rgba(255,255,255,0.7); -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; margin-bottom: 10px; float: right">
     <form class="pure-form pure-form-aligned" style="height: 47px" onSubmit="validateMagnet(); event.preventDefault();" id="magnetForm">
@@ -49,6 +49,7 @@
 	
 	function startPhaseTwo(magnet) {
 		document.getElementById('holdCenter').style.display = "none";
+		document.body.id = "secondBody"
 		document.getElementById('streamingPhase').style.display = "block";
 		document.getElementById('holder').style.display = "block";
 		document.getElementById('magnetLink').value = magnet;

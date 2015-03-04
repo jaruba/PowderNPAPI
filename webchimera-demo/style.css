@@ -13,6 +13,12 @@ body:before {
   vertical-align: middle;
   margin-right: -0.25em; /* Adjusts for spacing */
 }
+#secondBody:before {
+	display: none !important
+}
+#secondBody {
+	height: 90% !important
+}
 #holdCenter {
 	width: 418px;
 	display: block;
