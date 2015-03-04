@@ -1,7 +1,9 @@
 # Powder NPAPI Plugin
 Peerflix interface for the browser. NPAPI Plugin made with FireBreath + Node.js + Peerflix.
 
-[SEE DEMO](http://jaruba.github.io/PowderNPAPI/)
+[**SEE OUTPUT DEMO**](http://jaruba.github.io/PowderNPAPI/)
+
+[**SEE STREAMING DEMO**](http://jaruba.github.io/PowderNPAPI/webchimera-demo/) (also requires [WebChimera Plugin](http://www.webchimera.org/download) installed and enabled on the page)
 
 **Embedding in page:**
 
