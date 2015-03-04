@@ -1,54 +1,9 @@
 <html>
 <head>
 <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+<link rel="stylesheet" href="style.css">
 <script src="player/webchimera.js"></script>
 <title>Powder NPAPI Demo - Stream Torrents Online</title>
-<style>
-body {
-	background: url(http://1.bp.blogspot.com/-dMl_Yr2cdPU/UkHEhzZ2yNI/AAAAAAAAAK4/4sgs1C7xioI/s1600/8682733816_665e4c64d4_h.jpg) no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	height: 100%
-}
-body:before {
-  content: '';
-  display: inline-block;
-  height: 42%;
-  vertical-align: middle;
-  margin-right: -0.25em; /* Adjusts for spacing */
-}
-#holdCenter {
-	width: 418px;
-	display: block;
-	padding: 10px;
-	background: rgba(0,0,0,0.4);
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px
-}
-#logoBig {
-	margin-left: 4px;
-	margin-bottom: 2px
-}
-#formHolder {
-	display: block;
-	padding: 6px 10px;
-	padding-right: 19px;
-	background: rgba(255,255,255,0.7);
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px
-}
-#firstMagnetForm { height: 47px }
-#firstMagnet { width:300px }
-#magnetSubmit {
-	position: relative;
-	top: 1px;
-	left: 8px
-}
-</style>
 </head>
 <body>
 
@@ -70,8 +25,8 @@ body:before {
     </div>
     
     
-    <div id="streamingPhase" style="overflow:hidden; width: 1px; height: 1px">
-    <div style="display: inline-block; float: left; margin-top: 3px"><a href="http://www.webchimera.org/powder/"><img src="powder-logo-sm.png"></a></div>
+    <div id="streamingPhase" style="width: 800px; margin-top: -280px; display: none">
+    <div style="display: inline-block; float: left; margin-top: 3px"><a href="http://jaruba.github.io/PowderNPAPI/webchimera-demo/index.htm"><img src="powder-logo-sm.png"></a></div>
     <div style="display: inline-block; padding: 6px 10px; padding-right: 19px; background: rgba(255,255,255,0.7); -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; margin-bottom: 10px; float: right">
     <form class="pure-form pure-form-aligned" style="height: 47px" onSubmit="validateMagnet(); event.preventDefault();" id="magnetForm">
         <fieldset>
@@ -82,7 +37,7 @@ body:before {
         </fieldset>
     </form>
     </div></div>
-    <div style="width: 800px; height: 600px">
+    <div id="holder" style="width: 800px; height: 600px; display: none">
     <div id="player_wrapper" style="height: 100%"></div>
     </div>
 </center>
@@ -94,11 +49,10 @@ body:before {
 	
 	function startPhaseTwo(magnet) {
 		document.getElementById('holdCenter').style.display = "none";
-		document.getElementById('streamingPhase').style.overflow = "visible";
-		document.getElementById('streamingPhase').style.width = "800px";
-		document.getElementById('streamingPhase').style.height = "auto";
+		document.getElementById('streamingPhase').style.display = "block";
+		document.getElementById('holder').style.display = "block";
 		document.getElementById('magnetLink').value = magnet;
-		validateMagnet();
+		setTimeout(function() { validateMagnet(); },10);
 	}
 	
 		var processLink = [];

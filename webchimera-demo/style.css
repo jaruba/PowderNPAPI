@@ -1,0 +1,44 @@
+body {
+	background: url(http://1.bp.blogspot.com/-dMl_Yr2cdPU/UkHEhzZ2yNI/AAAAAAAAAK4/4sgs1C7xioI/s1600/8682733816_665e4c64d4_h.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	height: 100%
+}
+body:before {
+  content: '';
+  display: inline-block;
+  height: 42%;
+  vertical-align: middle;
+  margin-right: -0.25em; /* Adjusts for spacing */
+}
+#holdCenter {
+	width: 418px;
+	display: block;
+	padding: 10px;
+	background: rgba(0,0,0,0.4);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px
+}
+#logoBig {
+	margin-left: 4px;
+	margin-bottom: 2px
+}
+#formHolder {
+	display: block;
+	padding: 6px 10px;
+	padding-right: 19px;
+	background: rgba(255,255,255,0.7);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px
+}
+#firstMagnetForm { height: 47px }
+#firstMagnet { width:300px }
+#magnetSubmit {
+	position: relative;
+	top: 1px;
+	left: 8px
+}
