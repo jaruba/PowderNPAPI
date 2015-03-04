@@ -1,6 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+<script src="player/webchimera.js"></script>
 <title>Powder NPAPI Demo - Stream Torrents Online</title>
 <style>
 body {
@@ -57,7 +58,7 @@ body:before {
         <br>
         <br>
         <div id="formHolder">
-            <form class="pure-form pure-form-aligned" onSubmit="startPhaseTwo(document.getElementById('firstMagnet').value); event.preventDefault();" id="firstMagnetForm">
+            <form class="pure-form pure-form-aligned" onSubmit="event.preventDefault(); startPhaseTwo(document.getElementById('firstMagnet').value);" id="firstMagnetForm">
                 <fieldset>
                     <div class="pure-control-group">
                         <input id="firstMagnet" type="text" name="magnet" placeholder="Magnet Link" onFocus="this.select();" onMouseUp="return false;">
