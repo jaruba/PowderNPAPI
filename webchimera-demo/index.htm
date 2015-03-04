@@ -70,7 +70,7 @@ body:before {
     </div>
     
     
-    <div id="streamingPhase" style="width: 800px; margin-top:40px; display: none">
+    <div id="streamingPhase" style="overflow:hidden; width: 1px; height: 1px">
     <div style="display: inline-block; float: left; margin-top: 3px"><a href="http://www.webchimera.org/powder/"><img src="powder-logo-sm.png"></a></div>
     <div style="display: inline-block; padding: 6px 10px; padding-right: 19px; background: rgba(255,255,255,0.7); -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; margin-bottom: 10px; float: right">
     <form class="pure-form pure-form-aligned" style="height: 47px" onSubmit="validateMagnet(); event.preventDefault();" id="magnetForm">
@@ -94,7 +94,9 @@ body:before {
 	
 	function startPhaseTwo(magnet) {
 		document.getElementById('holdCenter').style.display = "none";
-		document.getElementById('streamingPhase').style.display = "block";
+		document.getElementById('streamingPhase').style.overflow = "visible";
+		document.getElementById('streamingPhase').style.width = "800px";
+		document.getElementById('streamingPhase').style.height = "auto";
 		document.getElementById('magnetLink').value = magnet;
 		validateMagnet();
 	}
