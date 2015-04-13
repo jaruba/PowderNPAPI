@@ -9,7 +9,7 @@ Peerflix interface for the browser. NPAPI Plugin made with FireBreath + Node.js 
 
     <object id="powder" type="application/x-powdernpapi" width="1" height="1"></object>
 
-**Streaming Demo Source Files:** [gh-pages branch](https://github.com/jaruba/PowderNPAPI/tree/gh-pages)
+**Streaming Demo Source Files:** [gh-pages branch](https://github.com/jaruba/PowderNPAPI/tree/gh-pages/webchimera-demo)
 
 JS API
 ==============
