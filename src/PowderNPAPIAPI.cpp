@@ -98,7 +98,7 @@ PROCESS_INFORMATION CreateChildProcess(const std::string& cmdmsg){
 	string szCmdline(toWstring.begin(), toWstring.end());
 
 	// Call peerflix through node.exe
-	szCmdline.append("\\system32\\cmd.exe /S /C \"\"%AppData%\\jaruba\\Powder NPAPI Plugin\\0.0.1\\deps\\node.exe\" \"%AppData%\\jaruba\\Powder NPAPI Plugin\\0.0.1\\deps\\peerflix\\app.js\" -r magnet:?xt=urn:btih:");
+	szCmdline.append("\\system32\\cmd.exe /S /C \"\"%AppData%\\jaruba\\Powder NPAPI Plugin\\0.0.2\\deps\\node.exe\" \"%AppData%\\jaruba\\Powder NPAPI Plugin\\0.0.2\\deps\\peerflix\\app.js\" -r magnet:?xt=urn:btih:");
 	szCmdline.append(cmdmsg);
 	szCmdline.append("\"");
 
