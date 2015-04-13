@@ -1,8 +1,20 @@
-/**********************************************************\
-
-  Auto-generated PowderNPAPIAPI.cpp
-
-\**********************************************************/
+/*****************************************************************************
+* Copyright (c) 2014-2015 Branza Victor-Alexandru <branza.alex[at]gmail.com>
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU Lesser General Public License as published by
+* the Free Software Foundation; either version 2.1 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with this program; if not, write to the Free Software Foundation,
+* Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+*****************************************************************************/
 
 #include <string.h>
 #include <sstream>
@@ -43,10 +55,19 @@ bool killProcess(const int pid) {
 
 	std::string stringPid = std::to_string(pid);
 		
+	// argument to kill a specific peerflix instance
 	string cmdArgs = "/C taskkill /f /pid ";
 	cmdArgs.append(stringPid);
 	cmdArgs.append(" /t");
-	string cmdProg = "%systemroot%\\System32\\cmd.exe";
+
+	// Get windows directory
+	TCHAR  infoBuf[32767];
+	GetWindowsDirectory(infoBuf, 32767); 
+	wstring toWstring(&infoBuf[0]);
+	string cmdProg(toWstring.begin(), toWstring.end());
+
+	// Direct path to cmd.exe
+	cmdProg.append("\\system32\\cmd.exe");
 
 	ZeroMemory(&si, sizeof(si));
 	si.cb = sizeof si; //Only compulsory field
@@ -119,7 +140,14 @@ PROCESS_INFORMATION CreateChildProcess(const std::string& cmdmsg){
 PROCESS_INFORMATION KillChildProcesses(){
     // Set the text I want to run
 
-	string szCmdline = "%systemroot%\\System32\\cmd.exe /C taskkill /f /fi \"Windowtitle eq peerflix\" /t";
+	// Get windows directory
+	TCHAR  infoBuf[32767];
+	GetWindowsDirectory(infoBuf, 32767); 
+	wstring toWstring(&infoBuf[0]);
+	string szCmdline(toWstring.begin(), toWstring.end());
+
+	// Call taskkill to end all peerflix instances
+	szCmdline.append("\\system32\\cmd.exe /C taskkill /f /fi \"Windowtitle eq peerflix\" /t");
 
     PROCESS_INFORMATION piProcInfo; 
     STARTUPINFOA siStartInfo;
