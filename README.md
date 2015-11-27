@@ -1,6 +1,6 @@
 # Powder NPAPI Plugin
 
-**As of 14 April 2015, Chrome requires it's users to manually enable NPAPI plugins, to do so, follow [this guide](http://wiki.webchimera.org/Chrome_-_Enable_NPAPI_Plugins).**
+**Deprecated: Since December 2015 there are no longer any browsers that support NPAPI plugins, this repo will remain up in hopes that it might still have some value for someone in the future.**
 
 Peerflix interface for the browser. NPAPI Plugin made with FireBreath + Node.js + Peerflix.
 
